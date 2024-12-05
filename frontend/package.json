@@ -1,0 +1,29 @@
+{
+  "name": "frontend",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:tailwind": "tailwindcss -i ./src/tailwind.css -o ./public/tailwind.css --minify",
+    "watch:tailwind": "tailwindcss -i ./src/tailwind.css -o ./public/tailwind.css --watch",
+    "dev": "concurrently \"vite\" \"npm run watch:tailwind\"",
+    "build": "npm run build:tailwind && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "vue": "^3.5.13",
+    "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.16",
+    "typescript": "~5.6.3",
+    "vite": "^6.0.1",
+    "vite-plugin-vue-devtools": "^7.6.7",
+    "vue-tsc": "^2.1.10"
+  }
+}
