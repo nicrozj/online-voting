@@ -34,7 +34,7 @@ onMounted(fetchData);
 			<Vote
 				v-for="vote in data"
 				:title="vote.title"
-				:path="'/vote/' + vote.id"
+				:id="vote.id"
 			/>
 		</section>
 	</main>

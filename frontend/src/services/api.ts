@@ -18,6 +18,16 @@ export const fetchVoteById = async (id: number) => {
     return response.data;
 }
 
+export const DeleteVoteById = async (id: number) => {
+    try {
+        const response = await api.delete(`/votes/${id}`);
+        return response.data;
+    }
+    catch (err) {
+        console.log(`Ошибка при удалении: ${err}`);
+    }
+}
+
 export const fetchAddVote = async (title: string, description: string) => {
     try {
         const response = await api.post(`/vote`, {

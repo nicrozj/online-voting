@@ -4,17 +4,19 @@ use axum::{
     extract::{Path, State},
     http::StatusCode,
     response::IntoResponse,
-    routing::{get, post},
+    routing::{delete, get, post},
     Json, Router,
 };
 use serde::Deserialize;
-use sqlx::{query, query_as};
+use sqlx::{database, query, query_as};
+use anyhow::Result;
 
 pub fn get_nest() -> Router<Database> {
     Router::new()
         .route("/votes", get(get_votes))
-        .route("/votes/:id", get(get_vote))
         .route("/vote", post(add_vote))
+        .route("/votes/:id", get(get_vote))
+        .route("/votes/:id", delete(delete_vote))
 }
 
 async fn get_votes(State(database): State<Database>) -> Json<Vec<Vote>> {
@@ -54,6 +56,20 @@ async fn add_vote(
 
     query.execute(database.get_pool()).await.map_err(|e| {
         eprintln!("add vote error: {e:?}, payload: {payload:?}");
+        StatusCode::INTERNAL_SERVER_ERROR
+    })?;
+
+    Ok(StatusCode::OK)
+}
+
+async fn delete_vote(
+    State(database): State<Database>,
+    Path(id): Path<i32>,
+) -> Result<impl IntoResponse, StatusCode> {
+    let query = query!("DELETE FROM votes WHERE id = ?", id);
+
+    query.execute(database.get_pool()).await.map_err(|e| {
+        eprintln!("delete vote error: {e:?}");
         StatusCode::INTERNAL_SERVER_ERROR
     })?;
 
