@@ -7,7 +7,7 @@ use axum::{
 };
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
-use sqlx::{query, query_as};
+use sqlx::{query, query_as, query_scalar};
 use anyhow::Result;
 
 #[derive(Clone, Serialize)]
@@ -29,28 +29,38 @@ impl Vote {
         State(database): State<Database>,
         Json(payload): Json<AddVoteForm>,
     ) -> Result<impl IntoResponse, StatusCode> {
-        println!("{:?}", payload);
-        let query = query!(
-            "INSERT INTO votes(title, description) VALUES(?, ?)",
+        println!("add vote payload: {:?}", payload);
+        let result = query!(
+            "INSERT INTO votes (title, description) VALUES (?, ?)",
             payload.title,
             payload.description
-        );
-
-        query.execute(database.get_pool()).await.map_err(|e| {
-            eprintln!("add vote error: {e:?}, payload: {payload:?}");
+        )
+        .execute(database.get_pool())
+        .await
+        .map_err(|e| {
+            eprintln!("Error inserting vote or fetching last insert id: {e:?}");
             StatusCode::INTERNAL_SERVER_ERROR
         })?;
+        let vote_id = result.last_insert_id();
 
-        Ok(StatusCode::OK)
+        eprintln!("{}", vote_id);
+        Ok(Json(vote_id))
     }
 
     pub async fn delete_vote(
         State(database): State<Database>,
         Path(id): Path<i32>,
     ) -> Result<impl IntoResponse, StatusCode> {
-        let query = query!("DELETE FROM votes WHERE id = ?", id);
+        let _ = query!("DELETE FROM options WHERE vote_id = ?", id)
+            .execute(database.get_pool())
+            .await
+            .map_err(|e| {
+                eprintln!("delete options error: {e:?}");
+                StatusCode::INTERNAL_SERVER_ERROR
+            })?;
 
-        query.execute(database.get_pool()).await.map_err(|e| {
+        let _ = query!("DELETE FROM votes WHERE id = ?", id)
+            .execute(database.get_pool()).await.map_err(|e| {
             eprintln!("delete vote error: {e:?}");
             StatusCode::INTERNAL_SERVER_ERROR
         })?;

@@ -13,8 +13,7 @@ const router = useRouter();
 
 const handleAddVote = async () => {
 	try {
-		data.value = await addVote(titleInput.value, descriptionInput.value);
-		console.log("Голосование добавлено: ", data.value);
+		data.value = await addVote(titleInput.value, descriptionInput.value, options.value);
 		titleInput.value = "";
 		descriptionInput.value = "";
 		router.push("/");
@@ -42,8 +41,8 @@ const deleteOption = (id: number) => {
 </script>
 
 <template>
-	<section class="flex flex-col items-center gap-10 max-w-[1000px] mx-auto bg-white rounded-lg p-4">
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+	<section class="flex flex-col items-center gap-10 max-w-[1000px] mx-auto">
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-10 bg-white rounded-lg p-4">
 			<div class="flex flex-col gap-4 items-center max-w-md">
 				<h1 class="text-xl">Добавить голосование</h1>
 				<UInput v-model="titleInput" placeholder="Введите название" />
@@ -72,9 +71,9 @@ const deleteOption = (id: number) => {
 					</div>
 				</div>
 			</div>
+			<UButton @click="handleAddVote">
+				Сохранить
+			</UButton>
 		</div>
-		<UButton>
-			Сохранить
-		</UButton>
 	</section>
 </template>

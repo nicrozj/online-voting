@@ -4,6 +4,7 @@ import { deleteVoteById } from '../services/api';
 const { title, id } = defineProps<{ title: string; id: number }>();
 
 const deleteVote = async () => {
+	console.log(id);
 	await deleteVoteById(id);
 	window.location.reload();
 }

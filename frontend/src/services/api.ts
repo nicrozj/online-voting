@@ -38,11 +38,21 @@ export const deleteVoteById = async (id: number) => {
     }
 }
 
-export const addVote = async (title: string, description: string) => {
+export const addVote = async (title: string, description: string, options: Array<string>) => {
+    let id: number;
     try {
         const response = await api.post(`/vote`, {
             title: title, 
             description: description,
+        });
+        id = response.data;
+    } catch (error) {
+        console.log('Ошибка при выполнении запроса: ', error);
+    }
+
+    try {
+        const response = await api.post(`/vote/${id}/options`, { 
+            options
         });
         return response.data;
     } catch (error) {
@@ -50,9 +60,9 @@ export const addVote = async (title: string, description: string) => {
     }
 }
 
-export const addOptions = async (options: Array<string>) => {
+export const getOptionsByVoteId = async (id: number) => {
     try {
-        const response = await api.post(`/options`, { options });
+        const response = await api.get(`/vote/${id}/options`);
         return response.data;
     } catch (error) {
         console.log('Ошибка при выполнении запроса: ', error);

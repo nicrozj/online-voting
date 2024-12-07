@@ -1,22 +1,32 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
-import { getVoteById } from "../services/api";
+import { getVoteById, getOptionsByVoteId } from "../services/api";
 
 const route = useRoute();
 const vote = ref("");
+const options = ref([]);
 
-const fetchData = async () => {
+const getVoteOptions = async () => {
 	try {
-		const response = await getVoteById(parseInt(route.params.id));
-		console.log('Голосование успешно изъято: ', response);
-		vote.value = response;
+		const response = await getOptionsByVoteId(parseInt(route.params.id));
+		options.value = response;
 	}
 	catch (err) {
 		console.log(err);
 	}
 }
-onMounted(fetchData);
+
+onMounted(async () => {
+	try {
+		const response = await getVoteById(parseInt(route.params.id));
+		vote.value = response;
+	}
+	catch (err) {
+		console.log(err);
+	}
+	getVoteOptions();
+});
 
 </script>
 
@@ -27,6 +37,13 @@ onMounted(fetchData);
 		>
 			<h1 class="text-3xl">{{ vote.title }}</h1>
 			<p class="text-xl">{{ vote.description }}</p>
+
+			<h1 class="text-3xl">
+				Варианты ответов:
+			</h1>
+			<div v-for="option in options">
+				{{ option.option_text }}
+			</div>
 		</section>
 	</main>
 </template>
