@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { DeleteVoteById } from '../services/api';
+import { deleteVoteById } from '../services/api';
 
 const { title, id } = defineProps<{ title: string; id: number }>();
 
 const deleteVote = async () => {
-	await DeleteVoteById(id);
+	await deleteVoteById(id);
 	window.location.reload();
 }
 

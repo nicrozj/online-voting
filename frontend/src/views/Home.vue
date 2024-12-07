@@ -1,23 +1,12 @@
 <script setup lang="ts">
-import Vote from "../components/Vote.vue";
-
 import { ref, onMounted } from "vue";
+import Vote from "../components/Vote.vue";
+import { getVotes } from "../services/api";
 
 const data = ref(null);
 
 const fetchData = async () => {
-	try {
-		const response = await fetch("http://127.0.0.1:8080/votes");
-
-		if (!response.ok) {
-			throw new Error("Ошибка при получении данных");
-		}
-
-		const json = await response.json();
-		data.value = json;
-	} catch (error) {
-		console.error("Ошибка при получении данных:", error);
-	}
+	data.value = await getVotes();
 };
 
 onMounted(fetchData);

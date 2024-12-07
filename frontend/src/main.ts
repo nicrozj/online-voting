@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import { createMemoryHistory, createRouter } from "vue-router";
+import { createWebHistory, createRouter } from "vue-router";
 import globalComponents from "./components/global";
 
 import App from "./App.vue";
@@ -9,7 +9,7 @@ import VotePage from "./views/VotePage.vue";
 import "../public/tailwind.css";
 
 const router = createRouter({
-	history: createMemoryHistory(),
+	history: createWebHistory(),
 	routes: [
 		{
 			path: "/",

@@ -1,14 +1,14 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
-import { fetchVoteById } from "../services/api";
+import { getVoteById } from "../services/api";
 
 const route = useRoute();
 const vote = ref("");
 
 const fetchData = async () => {
 	try {
-		const response = await fetchVoteById(parseInt(route.params.id));
+		const response = await getVoteById(parseInt(route.params.id));
 		console.log('Голосование успешно изъято: ', response);
 		vote.value = response;
 	}
