@@ -29,6 +29,7 @@ const model: any = defineModel();
 
     <input
       v-else
+      :type="type"
       :autocomplete="props.autocomplete"
       v-model="model"
       :placeholder="props.placeholder"

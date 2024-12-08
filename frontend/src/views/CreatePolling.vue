@@ -41,6 +41,7 @@ const deleteOption = (id: number) => {
 </script>
 
 <template>
+	<Header />
 	<section class="flex flex-col items-center gap-10 max-w-[1000px] mx-auto">
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-10 bg-white rounded-lg p-4">
 			<div class="flex flex-col gap-4 items-center max-w-md">

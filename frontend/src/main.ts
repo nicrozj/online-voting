@@ -6,6 +6,8 @@ import App from "./App.vue";
 import Home from "./views/Home.vue";
 import CreatePolling from "./views/CreatePolling.vue";
 import PollingPage from "./views/PollingPage.vue";
+import Registration from "./views/Registration.vue";
+import Login from "./views/Login.vue";
 import "../public/tailwind.css";
 
 const router = createRouter({
@@ -23,6 +25,14 @@ const router = createRouter({
 			path: "/polling/:id",
 			component: PollingPage,
 		},
+		{
+			path: "/registration",
+			component: Registration,
+		},
+		{
+			path: "/login",
+			component: Login,
+		}
 	],
 });
 

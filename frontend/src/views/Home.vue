@@ -12,7 +12,8 @@ const fetchData = async () => {
 onMounted(fetchData);
 </script>
 <template>
-	<main class="flex flex-col gap-4 bg-stone-100 min-h-screen items-center">
+	<Header />
+	<main class="flex flex-col gap-4 bg-stone-100 items-center">
 		<RouterLink
 			to="/create"
 			class="bg-stone-600 text-3xl rounded-xl text-white py-2 px-2 hover:scale-95 transition-transform"

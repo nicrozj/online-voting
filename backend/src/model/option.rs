@@ -6,8 +6,8 @@ use crate::model::database::Database;
 
 #[derive(Deserialize, Serialize, Clone)]
 pub struct Option {
-    pub id: i32,
-    pub polling_id: i32,
+    pub id: u64,
+    pub polling_id: u64,
     pub option_text: String,
 }
 
@@ -18,7 +18,7 @@ pub struct Options {
 impl Option {
     pub async fn add_options(
         State(database): State<Database>,
-        Path(id): Path<i32>,
+        Path(id): Path<u64>,
         Json(options): Json<Options> 
     ) -> Result<impl IntoResponse, StatusCode> {
         eprintln!("options: {:?}", options.options);
@@ -40,7 +40,7 @@ impl Option {
 
     pub async fn get_options(
         State(database): State<Database>,
-        Path(id): Path<i32>,
+        Path(id): Path<u64>,
     ) -> Result<Json<Vec<Option>>, StatusCode> {
         let options = sqlx::query_as!(
             Option,

@@ -12,7 +12,8 @@ use anyhow::Result;
 
 #[derive(Clone, Serialize)]
 pub struct Polling {
-    pub id: i32,
+    pub id: u64,
+    pub creator_id: u64,
     pub title: Option<String>,
     pub description: Option<String>,
     pub created_at: Option<NaiveDateTime>,
