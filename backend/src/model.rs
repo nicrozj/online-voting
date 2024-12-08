@@ -1,3 +1,3 @@
 pub mod database;
-pub mod vote;
+pub mod polling;
 pub mod option;

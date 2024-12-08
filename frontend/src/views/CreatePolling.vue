@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-import { addVote } from "../services/api";
+import { addPolling } from "../services/api";
 import UInput from "@/components/global/UInput.vue";
 
 const titleInput = ref("");
@@ -11,9 +11,9 @@ const data = ref(null);
 
 const router = useRouter();
 
-const handleAddVote = async () => {
+const handleAddPolling = async () => {
 	try {
-		data.value = await addVote(titleInput.value, descriptionInput.value, options.value);
+		data.value = await addPolling(titleInput.value, descriptionInput.value, options.value);
 		titleInput.value = "";
 		descriptionInput.value = "";
 		router.push("/");
@@ -71,7 +71,7 @@ const deleteOption = (id: number) => {
 					</div>
 				</div>
 			</div>
-			<UButton @click="handleAddVote">
+			<UButton @click="handleAddPolling">
 				Сохранить
 			</UButton>
 		</div>

@@ -1,7 +1,6 @@
 use crate::model::database::Database;
 use anyhow::{Context, Result};
 use axum::Router;
-use sqlx::MySqlPool;
 use tokio::net::TcpListener;
 use tower_http::cors::{Any, CorsLayer};
 

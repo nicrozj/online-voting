@@ -11,7 +11,7 @@ use sqlx::{query, query_as, query_scalar};
 use anyhow::Result;
 
 #[derive(Clone, Serialize)]
-pub struct Vote {
+pub struct Polling {
     pub id: i32,
     pub title: Option<String>,
     pub description: Option<String>,
@@ -19,39 +19,39 @@ pub struct Vote {
 }
 
 #[derive(Deserialize, Clone, Debug)]
-pub struct AddVoteForm {
+pub struct AddPollingForm {
     title: String,
     description: String,
 }
 
-impl Vote {
-    pub async fn add_vote(
+impl Polling {
+    pub async fn add_polling(
         State(database): State<Database>,
-        Json(payload): Json<AddVoteForm>,
+        Json(payload): Json<AddPollingForm>,
     ) -> Result<impl IntoResponse, StatusCode> {
-        println!("add vote payload: {:?}", payload);
+        println!("add polling payload: {:?}", payload);
         let result = query!(
-            "INSERT INTO votes (title, description) VALUES (?, ?)",
+            "INSERT INTO pollings (title, description) VALUES (?, ?)",
             payload.title,
             payload.description
         )
         .execute(database.get_pool())
         .await
         .map_err(|e| {
-            eprintln!("Error inserting vote or fetching last insert id: {e:?}");
+            eprintln!("Error inserting polling or fetching last insert id: {e:?}");
             StatusCode::INTERNAL_SERVER_ERROR
         })?;
-        let vote_id = result.last_insert_id();
+        let polling_id = result.last_insert_id();
 
-        eprintln!("{}", vote_id);
-        Ok(Json(vote_id))
+        eprintln!("{}", polling_id);
+        Ok(Json(polling_id))
     }
 
-    pub async fn delete_vote(
+    pub async fn delete_polling(
         State(database): State<Database>,
         Path(id): Path<i32>,
     ) -> Result<impl IntoResponse, StatusCode> {
-        let _ = query!("DELETE FROM options WHERE vote_id = ?", id)
+        let _ = query!("DELETE FROM options WHERE polling_id = ?", id)
             .execute(database.get_pool())
             .await
             .map_err(|e| {
@@ -59,33 +59,33 @@ impl Vote {
                 StatusCode::INTERNAL_SERVER_ERROR
             })?;
 
-        let _ = query!("DELETE FROM votes WHERE id = ?", id)
+        let _ = query!("DELETE FROM pollings WHERE id = ?", id)
             .execute(database.get_pool()).await.map_err(|e| {
-            eprintln!("delete vote error: {e:?}");
+            eprintln!("delete polling error: {e:?}");
             StatusCode::INTERNAL_SERVER_ERROR
         })?;
 
         Ok(StatusCode::OK)
     }
 
-    pub async fn get_votes(State(database): State<Database>) -> Result<Json<Vec<Vote>>, StatusCode> {
-        let data = query_as!(Vote, "SELECT * FROM votes")
+    pub async fn get_pollings(State(database): State<Database>) -> Result<Json<Vec<Polling>>, StatusCode> {
+        let data = query_as!(Polling, "SELECT * FROM pollings")
             .fetch_all(database.get_pool())
             .await
             .map_err(|err| {
-                eprintln!("get votes error: {err:?}");
+                eprintln!("get pollings error: {err:?}");
                 StatusCode::INTERNAL_SERVER_ERROR
             })?;
     
         Ok(Json(data))
     }
     
-    pub async fn get_vote(Path(id): Path<i32>, State(database): State<Database>) -> Result<Json<Vote>, StatusCode> {
-        let data = query_as!(Vote, "SELECT * FROM votes WHERE id = ?", id)
+    pub async fn get_polling(Path(id): Path<i32>, State(database): State<Database>) -> Result<Json<Polling>, StatusCode> {
+        let data = query_as!(Polling, "SELECT * FROM pollings WHERE id = ?", id)
             .fetch_one(database.get_pool())
             .await
             .map_err(|err| {
-                eprintln!("get vote error: {err:?}");
+                eprintln!("get polling error: {err:?}");
                 StatusCode::INTERNAL_SERVER_ERROR
             })?;
     

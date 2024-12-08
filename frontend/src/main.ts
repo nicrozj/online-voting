@@ -4,8 +4,8 @@ import globalComponents from "./components/global";
 
 import App from "./App.vue";
 import Home from "./views/Home.vue";
-import CreateVote from "./views/CreateVote.vue";
-import VotePage from "./views/VotePage.vue";
+import CreatePolling from "./views/CreatePolling.vue";
+import PollingPage from "./views/PollingPage.vue";
 import "../public/tailwind.css";
 
 const router = createRouter({
@@ -17,11 +17,11 @@ const router = createRouter({
 		},
 		{
 			path: "/create",
-			component: CreateVote,
+			component: CreatePolling,
 		},
 		{
-			path: "/vote/:id",
-			component: VotePage,
+			path: "/polling/:id",
+			component: PollingPage,
 		},
 	],
 });

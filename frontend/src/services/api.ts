@@ -8,9 +8,9 @@ const api = axios.create({
     }
 });
 
-export const getVotes = async () => {
+export const getPollings = async () => {
     try {
-        const response = await api.get("/votes");
+        const response = await api.get("/pollings");
         return response.data;
     }
     catch (err) {
@@ -18,9 +18,9 @@ export const getVotes = async () => {
     }
 }
 
-export const getVoteById = async (id: number) => {
+export const getPollingById = async (id: number) => {
     try {
-        const response = await api.get(`/vote/${id}`);
+        const response = await api.get(`/pollings/${id}`);
         return response.data;
     }
     catch (err) {
@@ -28,9 +28,9 @@ export const getVoteById = async (id: number) => {
     }
 }
 
-export const deleteVoteById = async (id: number) => {
+export const deletePollingById = async (id: number) => {
     try {
-        const response = await api.delete(`/vote/${id}`);
+        const response = await api.delete(`/pollings/${id}`);
         return response.data;
     }
     catch (err) {
@@ -38,10 +38,10 @@ export const deleteVoteById = async (id: number) => {
     }
 }
 
-export const addVote = async (title: string, description: string, options: Array<string>) => {
+export const addPolling = async (title: string, description: string, options: Array<string>) => {
     let id: number;
     try {
-        const response = await api.post(`/vote`, {
+        const response = await api.post(`/pollings`, {
             title: title, 
             description: description,
         });
@@ -51,7 +51,7 @@ export const addVote = async (title: string, description: string, options: Array
     }
 
     try {
-        const response = await api.post(`/vote/${id}/options`, { 
+        const response = await api.post(`/pollings/${id}/options`, { 
             options
         });
         return response.data;
@@ -60,9 +60,9 @@ export const addVote = async (title: string, description: string, options: Array
     }
 }
 
-export const getOptionsByVoteId = async (id: number) => {
+export const getOptionsByPollingId = async (id: number) => {
     try {
-        const response = await api.get(`/vote/${id}/options`);
+        const response = await api.get(`/pollings/${id}/options`);
         return response.data;
     } catch (error) {
         console.log('Ошибка при выполнении запроса: ', error);

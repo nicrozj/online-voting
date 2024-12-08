@@ -7,7 +7,7 @@ use crate::model::database::Database;
 #[derive(Deserialize, Serialize, Clone)]
 pub struct Option {
     pub id: i32,
-    pub vote_id: i32,
+    pub polling_id: i32,
     pub option_text: String,
 }
 
@@ -24,7 +24,7 @@ impl Option {
         eprintln!("options: {:?}", options.options);
         for option in options.options {
             sqlx::query!(
-                "INSERT INTO options (vote_id, option_text) VALUES (?, ?)",
+                "INSERT INTO options (polling_id, option_text) VALUES (?, ?)",
                 id,
                 option,
             )
@@ -44,7 +44,7 @@ impl Option {
     ) -> Result<Json<Vec<Option>>, StatusCode> {
         let options = sqlx::query_as!(
             Option,
-            "SELECT * FROM options WHERE (vote_id) = ?",
+            "SELECT * FROM options WHERE (polling_id) = ?",
             id,
         )
         .fetch_all(database.get_pool())
