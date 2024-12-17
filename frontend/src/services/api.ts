@@ -69,4 +69,16 @@ export const getOptionsByPollingId = async (id: number) => {
     }
 }
 
+export const registration = async (login: string, password: string) => {
+    try {
+        const response = await api.post(`/registration`, {
+            login: login,
+            password: password,
+        }); 
+        return response.data;
+    } catch (error) {
+        console.log(`Ошибка при попытке регистрации: ${error}`);
+    }
+}
+
 export default api;

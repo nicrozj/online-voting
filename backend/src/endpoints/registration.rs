@@ -1,15 +1,15 @@
-use axum::routing::get;
+use axum::routing::{get, post};
 use axum::{extract::State, http::StatusCode, response::IntoResponse, Json, Router};
 use anyhow::Result;
 use serde::Deserialize;
 use sqlx::database;
 
 use crate::model::database::Database;
-use crate::model::user::User;
+use crate::model::user::{self, User};
 
 pub fn get_nest() -> Router<Database> {
     Router::new()
-        .route("/", get(registration))
+        .route("/", post(registration))
 }
 
 #[derive(Deserialize)]

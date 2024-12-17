@@ -39,7 +39,7 @@ impl User {
 
         let query = sqlx::query!("INSERT INTO users(`login`, `password`) VALUES (?, ?)", login, hash);
 
-        let id = query.execute(database.get_pool()).await.context("failed to sign up")?.last_insert_id();
+        let id = query.execute(database.get_pool()).await.context("failed to execute when registration")?.last_insert_id();
 
         Ok(id)
     }

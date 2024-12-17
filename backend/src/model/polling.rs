@@ -32,9 +32,10 @@ impl Polling {
     ) -> Result<impl IntoResponse, StatusCode> {
         println!("add polling payload: {:?}", payload);
         let result = query!(
-            "INSERT INTO pollings (title, description) VALUES (?, ?)",
+            "INSERT INTO pollings (title, description, creator_id) VALUES (?, ?, ?)",
             payload.title,
-            payload.description
+            payload.description,
+            0
         )
         .execute(database.get_pool())
         .await
